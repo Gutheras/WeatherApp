@@ -1,0 +1,66 @@
+﻿@model WeatherViewModel
+@{
+    ViewData["Title"] = "Weather Forecast";
+}
+
+<div class="container mx-auto max-w-3xl">
+    <h1 class="text-3xl font-bold text-center mb-8">Weather Forecast</h1>
+
+    <form asp-action="GetWeather" method="post" class="mb-8">
+        <div class="flex">
+            <input type="text" name="city" placeholder="Enter city name" required
+                   class="flex-grow px-4 py-2 rounded-l-md border-2 border-blue-300 focus:outline-none focus:border-blue-500" />
+            <button type="submit"
+                    class="bg-blue-500 text-black px-4 py-2 rounded-r-md hover:bg-blue-600 transition-colors">
+                Search
+            </button>
+        </div>
+    </form>
+
+    @if (!string.IsNullOrEmpty(ViewBag.Error))
+    {
+        <p class="text-center text-red-500">@ViewBag.Error</p>
+    }
+
+    @if (Model != null)
+    {
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-semibold">@Model.Current.City</h2>
+                <form asp-action="GetWeather" method="post">
+                    <input type="hidden" name="city" value="@Model.Current.City" />
+                    <input type="hidden" name="units" value="@(Model.Units == "metric" ? "imperial" : "metric")" />
+                    <button type="submit"
+                            class="bg-blue-500 text-black px-3 py-1 rounded-md text-sm hover:bg-blue-600 transition-colors">
+                        Switch to @(Model.Units == "metric" ? "°F" : "°C")
+                    </button>
+                </form>
+            </div>
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-5xl font-bold">
+                        @Math.Round(Model.Current.Temperature)@(Model.Units == "metric" ? "°C" : "°F")
+                    </p>
+                    <p class="text-gray-500">@Model.Current.Description</p>
+                </div>
+                <img src="https://openweathermap.org/img/wn/@(Model.Current.Icon).png"
+                     alt="@Model.Current.Description" class="w-24 h-24" />
+            </div>
+            <div class="mt-4 grid grid-cols-2 gap-4">
+                <div>
+                    <p class="text-gray-500">Humidity</p>
+                    <p class="font-semibold">@Model.Current.Humidity%</p>
+                </div>
+                <div>
+                    <p class="text-gray-500">Wind Speed</p>
+                    <p class="font-semibold">
+                        @Model.Current.WindSpeed @(Model.Units == "metric" ? "m/s" : "mph")
+                    </p>
+                </div>
+            </div>
+        </div>
+
+
+    }
+</div>
+
