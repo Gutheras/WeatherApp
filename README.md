@@ -15,7 +15,7 @@
 
 **Setup Instructions**
 - Clone the Repository
-- ```git clone https://github.com/yourusername/weather-app.git  ```
+- ```git clone https://github.com/Gutheras/WeatherApp  ```
   
 
 **Configure the Weather API**
